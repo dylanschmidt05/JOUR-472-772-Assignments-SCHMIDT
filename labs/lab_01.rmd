@@ -41,24 +41,56 @@ umd_courses <- read_rds("lab_01.rds")
 
 **Q1** Which department has the highest mean (average) number of seats for its classes? You need to show the department with the highest average first. Which one is the most surprising/interesting to you? **A1**
 
+The Computer, Math and Natural Sciences has the highest average of all the departments. I would say that one is the most surprising because of the sheer difference between it and the next closest. A mean difference of 150 seats is quite crazy so I would be curious to see if there are a couple classes that are drastically bringing up the average (like some online classes)
+
 ```{r}
+umd_courses |>
+  group_by(department) |>
+  summarise(
+    mean_seats = mean(seats),
+  ) |>
+  arrange(desc(mean_seats))
 ```
 
 **Q2** Find out the greatest number of times any individual class has been offered in our dataset. Your code must show the greatest number of classes first.
 **A2**
 
+There are a ton of classes that have been offered 29 times in our dataset.
+
 ```{r}
+umd_courses |>
+  group_by(id) |>
+  summarise(
+    count_classes = n(),
+  ) |>
+  arrange(desc(count_classes))
 ```
 
 **Q3** Count the number of courses for each instructor and department. Which instructor has taught the most?
-**A3**
+**A3** The instructor who has taught the most (outside of the NA and Instructor: TBA totals) is Keith Yearwood at 79 classes in the Geographical scienes department.
 
 ```{r}
+umd_courses |>
+  group_by(instructors, department) |>
+  summarise(
+    count_classes = n()
+  ) |>
+  arrange(desc(count_classes))
 ```
 
 **Q4** Given the results for Q3, what would have made it easier to find the answer? You don't have to know *how* to accomplish this; I want you to describe in words what would make the answer easier to see. How confident are you that the answer you got is the right one, and why? **A4**
 
+It would have been easier if we could filter out all the instructors that are listed as NA or Instructor: TBA. I am not very confident that my answer is the right one because there could be a professor who taught more classes but was just listed as NA or Instructor: TBA in the system.
+
 **Q5** Take one of the questions you listed in the final question of the pre_lab and try to answer it here in code. If you don't know how to fully answer it, write what code you can and describe in words what else you would need to do. If you got an answer, is it interesting? **A5**
 
+I think the answer is interesting because we see that the Computer, Math and Natural Sciences department only has one class in the system. It was the department with the highest number of mean number of seats so it appears that they only had one class that just had 440 people registered in it. 
+
 ```{r}
+umd_courses |>
+  group_by(department) |>
+  summarise(
+    count_classes = n()
+  ) |>
+  arrange(count_classes)
 ```
