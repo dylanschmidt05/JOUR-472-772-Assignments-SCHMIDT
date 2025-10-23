@@ -1,7 +1,7 @@
 ---
 title: "Reverse Engineering Project"
-author: "Student names here"
-date: "Date here"
+author: "Dylan Schmidt, Quinn Muller, Isabella Gonzalez"
+date: "10/22/25"
 output:
   html_document:
     theme: cerulean
@@ -18,14 +18,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
-In this notebook, we are reverse engineering the story, [STORY NAME](STORY URL)
+In this notebook, we are reverse engineering the story, [Inside The Political Donation History Of Wealthy Sports Owners](https://fivethirtyeight.com/features/inside-the-political-donation-history-of-wealthy-sports-owners/)
 
 ## Load libraries
 
 Loading required libraries for this analysis.
 
 ```{r echo=FALSE, message=FALSE}
-
+library(tidyverse)
+library(janitor)
 ```
 
 ## Load and Cleaning Data
@@ -35,11 +36,14 @@ In this section, describe the source of the data, write a basic data dictionary 
 ```{r}
 # Load required data
 
+data <- read_csv("sports-political-donations.csv") |> clean_names()
+
 # Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
 
 # Clean required data and prepare for analysis if needed. 
 
-
+data |> gsub("\\$", "", amount)
+data |> gsub(",", "", data)
 ```
 
 ## Sentences to Engineer
@@ -47,11 +51,16 @@ In this notebook, we are reverse engineering five sentences from the story.
 
 ### Sentence 1
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [Total donations ]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
 # Put code to reverse engineer sentence here
+
+data |> 
+  summarise(
+    total_donations = sum(amount)
+  )
 
 # Display results of code below this codeblock
 
